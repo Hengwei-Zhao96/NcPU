@@ -1,0 +1,5 @@
+python main_mpe.py --dataset "cifar10" --positive_class_index "0,1,8,9" --positive_size 1000 --unlabeled_size 40000 --true_class_prior 0.4
+python main_mpe.py --dataset "cifar100" --positive_class_index "4,30,55,72,95,1,32,67,73,91,6,7,14,18,24,3,42,43,88,97,15,19,21,31,38,34,63,64,66,75,26,45,77,79,99,2,11,35,46,98,27,29,44,78,93,36,50,65,74,80" --positive_size 1000 --unlabeled_size 40000 --true_class_prior 0.5
+python main_mpe.py --dataset "stl10" --positive_class_index "0,2,3,8,9" --positive_size 1000 --unlabeled_size 90000 --true_class_prior 0
+python main_mpe.py --dataset "abcd" --positive_class_index "1" --positive_size 300 --unlabeled_size 4000 --true_class_prior 0.5
+python main_mpe.py --dataset "xbd-all" --positive_class_index "0,1" --positive_size 500 --unlabeled_size 20000 --true_class_prior 0.4
