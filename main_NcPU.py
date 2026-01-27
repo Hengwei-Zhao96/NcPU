@@ -10,8 +10,6 @@ from utils_algorithm.one_epoch_NoiCPU import train_NoiCPU, validate_NoiCPU
 from utils_data.get_noicpu_dataloader import get_noicpu_dataloader
 
 from utils_loss_function.NoiCPU import ClsLoss, EntropyLoss, NoiContLoss
-from utils_loss_function.nnPU import nnPULoss, uPULoss
-from utils_loss_function.CE import CELoss
 
 np.set_printoptions(suppress=True, precision=1)
 
@@ -86,8 +84,6 @@ def main(args):
     scaler = torch.GradScaler()
 
     cls_loss = ClsLoss(args)
-    # cls_loss = CELoss(balance=True)
-    # cls_loss = uPULoss(class_prior=args.true_class_prior) # without pseudo labels
     cont_loss = NoiContLoss(contloss_type = args.contloss_type)
     ent_loss = EntropyLoss()
 
