@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from .utils_get_datasets import get_dataset, train_val_split, train_val_split_with_unlabeled
 from .utils_get_transforms import get_transforms
 
-class TrainingDatasetNoiCPU(Dataset):
+class TrainingDatasetNcPU(Dataset):
     def __init__(self, images, labels, true_labels, weak_transforms, strong_transforms):
         self.images = images
         self.labels = labels
@@ -26,7 +26,7 @@ class TrainingDatasetNoiCPU(Dataset):
         return index, each_image_w, each_image_s_online, each_image_s_target, each_label, each_true_label
 
 
-class TestingDatasetNoiCPU(Dataset):
+class TestingDatasetNcPU(Dataset):
     def __init__(self, images, true_labels, testing_transforms):
         self.images = images
         self.true_labels = true_labels
@@ -42,7 +42,7 @@ class TestingDatasetNoiCPU(Dataset):
         return index, each_image, each_true_label
 
 
-def get_noicpu_dataloader(dataset_name, data_path, positive_class_index, positive_num, unlabeled_num, true_class_prior, batch_size, pos_label):
+def get_ncpu_dataloader(dataset_name, data_path, positive_class_index, positive_num, unlabeled_num, true_class_prior, batch_size, pos_label):
     all_dataset = get_dataset(dataset_name=dataset_name, data_path=data_path, positive_class_index=positive_class_index, pos_label=pos_label)
 
     if dataset_name == "stl10":
@@ -61,10 +61,10 @@ def get_noicpu_dataloader(dataset_name, data_path, positive_class_index, positiv
 
     weak_transforms, strong_transforms, testing_transforms = get_transforms(dataset_name=dataset_name)
 
-    training_dataset = TrainingDatasetNoiCPU(images=training_data, labels=training_labels, true_labels=training_true_labels, weak_transforms=weak_transforms, strong_transforms=strong_transforms)
+    training_dataset = TrainingDatasetNcPU(images=training_data, labels=training_labels, true_labels=training_true_labels, weak_transforms=weak_transforms, strong_transforms=strong_transforms)
     training_loader = DataLoader(training_dataset, batch_size=batch_size, shuffle=True, drop_last=True, num_workers=4, pin_memory=True)
 
-    testing_dataset = TestingDatasetNoiCPU(images=all_dataset["all_testing_data"], true_labels=all_dataset["all_testing_label"], testing_transforms=testing_transforms)
+    testing_dataset = TestingDatasetNcPU(images=all_dataset["all_testing_data"], true_labels=all_dataset["all_testing_label"], testing_transforms=testing_transforms)
     testing_loader = DataLoader(testing_dataset, batch_size=batch_size, shuffle=False, num_workers=4)
 
     return training_loader, testing_loader, training_confidence

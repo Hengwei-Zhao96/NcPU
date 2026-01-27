@@ -5,9 +5,9 @@ import torch
 import torch.nn.functional as F
 
 from toolbox import pu_metric, metric_prin, AverageMeter, ProgressMeter, accuracy
-from utils_algorithm.NoiCPU import get_cont_mask, get_true_mask, get_pun_index, get_weakly_supervised_mask
+from utils_algorithm.NcPU import get_cont_mask, get_true_mask, get_pun_index, get_weakly_supervised_mask
 
-def train_NoiCPU(args, train_loader, model, cls_loss_fn, cont_loss_fn, ent_loss_fn, optimizer, scaler, epoch):
+def train_NcPU(args, train_loader, model, cls_loss_fn, cont_loss_fn, ent_loss_fn, optimizer, scaler, epoch):
     batch_time = AverageMeter("Time", ":1.2f", is_sum=True)
     data_time = AverageMeter("Data", ":1.2f", is_sum=True)
     acc_cls = AverageMeter("Acc@Cls", ":2.2f")
@@ -168,7 +168,7 @@ def train_NoiCPU(args, train_loader, model, cls_loss_fn, cont_loss_fn, ent_loss_
     args.tb_logger.add_scalar("Threshold->Positive", model.threshold_param[0], epoch)
     args.tb_logger.add_scalar("Threshold->Negative", model.threshold_param[1], epoch)
 
-def validate_NoiCPU(args, epoch, model, test_loader):
+def validate_NcPU(args, epoch, model, test_loader):
 
     print("==> Evaluation...")
     y_pred = []

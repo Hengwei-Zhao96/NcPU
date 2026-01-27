@@ -6,13 +6,9 @@ class ClsLoss(nn.Module):
     def __init__(self, args):
         super().__init__()
         self.warm_up = args.warm_up
-        self.loss_type = args.loss_type
 
     def forward(self, outputs, confidence, idxs, epoch):
-        if self.loss_type == "ce":
-            logsm_outputs = F.log_softmax(outputs, dim=1)
-        elif self.loss_type == "tce":
-            logsm_outputs = self.taylor_CE(outputs, 4)
+        logsm_outputs = F.log_softmax(outputs, dim=1)
 
         p_idx = idxs["p_idx"]
         u_idx = idxs["u_idx"]
@@ -32,12 +28,6 @@ class ClsLoss(nn.Module):
         average_loss = p_loss + u_loss
 
         return average_loss
-    
-    def taylor_CE(self, outputs, t):
-        taylor_outputs = torch.zeros_like(outputs)
-        for i in range(1, t + 1):
-            taylor_outputs -= torch.pow(1 - torch.softmax(outputs, dim=1), i) / i # - is used to align the utlization of CE Loss
-        return taylor_outputs
     
     def confidence_update(self, batchCof, pse_n_idx):
 

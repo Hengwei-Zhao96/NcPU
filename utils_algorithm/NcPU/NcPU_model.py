@@ -18,14 +18,14 @@ class BatchNorm1d(nn.Module):
         x = x.view(-1, self.dim)
         return x
     
-class NoiCPU(nn.Module):
+class NcPU(nn.Module):
     def __init__(self, args, label_confidence):
-        super(NoiCPU, self).__init__()
+        super(NcPU, self).__init__()
         self.emam = args.model_m
         self.dataset_name = args.dataset
 
-        self.backbone_online = NoiCPU.get_backbone('resnet18', self.dataset_name)
-        self.backbone_target = NoiCPU.get_backbone('resnet18', self.dataset_name)
+        self.backbone_online = NcPU.get_backbone('resnet18', self.dataset_name)
+        self.backbone_target = NcPU.get_backbone('resnet18', self.dataset_name)
         
         dim_out, dim_in = self.backbone_online.fc.weight.shape
         dim_mlp = 2048
@@ -52,7 +52,7 @@ class NoiCPU(nn.Module):
         self.register_buffer("time_p", torch.tensor(0.5))
         self.register_buffer("p_model", torch.tensor([0.5, 0.5]))
         self.register_buffer("threshold_param", torch.tensor([0.5, 0.5]))
-        self.threshold = Threshold(time_p=self.time_p, p_model=self.p_model, class_prior=args.class_prior, momentum=args.threshold_m)
+        self.threshold = Threshold(time_p=self.time_p, p_model=self.p_model, momentum=args.threshold_m)
 
     def forward(self, w_image, s_image_online=None, s_image_target=None, labels=None, args=None, eval_only=False):
         output = self.classifier(w_image)
@@ -99,11 +99,6 @@ class NoiCPU(nn.Module):
         self.threshold_param = self.threshold.get_threshold(cls_logits, labels, softmax=True)
         self.time_p = self.threshold.time_p
         self.p_model = self.threshold.p_model
-
-    # def threshold_proto_update(self, proto_pro, labels):
-    #     self.threshold_param = self.threshold.get_threshold(proto_pro, labels, softmax=False)
-    #     self.time_p = self.threshold.time_p
-    #     self.p_model = self.threshold.p_model
 
     @staticmethod
     def get_backbone(backbone_name, dataset_name):
