@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from utils_model.NoiCPU import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
+from utils_model.NcPU import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 
 from .get_partial_label import get_partial_label
 from .get_threshold import Threshold
