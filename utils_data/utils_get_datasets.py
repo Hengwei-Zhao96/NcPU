@@ -2,8 +2,6 @@ import ssl
 import numpy as np
 import torchvision.datasets as dsets
 
-from utils_data.customized_datasets import ABCDDataset,xBDDataset
-
 
 def binarize_labels(labels, positive_class_index, pos_label):
     """
@@ -65,33 +63,6 @@ def get_dataset(dataset_name, data_path, positive_class_index, pos_label):
         all_labeled_training_label = binarize_labels(np.array(all_training_dataset.targets), positive_class_index, pos_label)
         all_testing_data = np.array(all_testing_dataset.data)
         all_testing_label = binarize_labels(np.array(all_testing_dataset.targets), positive_class_index, pos_label)
-    elif dataset_name == "eurosat":
-        # positive_class_index: "3,4,7" -> Constructed infrastructure
-        # positive_size: 1000
-        # unlabeled_size: 15000
-        # true_class_prior: 0.3
-        # batch_size: 128
-        # lr: 0.001
-        # ent_loss_weight: 5
-        ssl._create_default_https_context = ssl._create_unverified_context
-        eurosat_dataset = dsets.EuroSAT(root=data_path, download=True)
-        
-        training_testing_dataset = []
-        training_testing_label = []
-        for imgpath_label in eurosat_dataset.imgs:
-            training_testing_dataset.append(np.asanyarray(eurosat_dataset.loader(imgpath_label[0])))
-            training_testing_label.append(imgpath_label[1])
-
-        np.random.seed(57)
-        training_testing_id = list(range(len(training_testing_dataset)))
-        np.random.shuffle(training_testing_id)
-        training_id = training_testing_id[:int(len(training_testing_dataset)*0.7)]
-        testing_id = training_testing_id[int(len(training_testing_dataset)*0.7):]
-
-        all_labeled_training_data = np.array(training_testing_dataset)[training_id]
-        all_labeled_training_label = binarize_labels(np.array(training_testing_label)[training_id], positive_class_index, pos_label)
-        all_testing_data = np.array(training_testing_dataset)[testing_id]
-        all_testing_label = binarize_labels(np.array(training_testing_label)[testing_id], positive_class_index, pos_label)
     elif dataset_name == "stl10":
         # positive_class_index: "0,2,3,8,9"
         # positive_size: 1000
@@ -107,58 +78,6 @@ def get_dataset(dataset_name, data_path, positive_class_index, pos_label):
         all_labeled_training_label = binarize_labels(np.array(all_training_dataset.labels), positive_class_index, pos_label)
         all_testing_data = np.array(all_testing_dataset.data).transpose(0,2,3,1)
         all_testing_label = binarize_labels(np.array(all_testing_dataset.labels), positive_class_index, pos_label)
-    elif dataset_name == "abcd":
-        # positive_class_index: "1" -> Damaged
-        # positive_size: 500
-        # unlabeled_size: 4000
-        # true_class_prior: 0.5
-        # batch_size: 32
-        # lr: 0.001
-        # ent_loss_weight: 5
-        abcd_dataset = ABCDDataset(root=data_path)
-        
-        training_testing_dataset = []
-        training_testing_label = []
-        for imgpath_label in abcd_dataset.imgs:
-            training_testing_dataset.append(np.asanyarray(abcd_dataset.loader(imgpath_label[0])))
-            training_testing_label.append(imgpath_label[1])
-
-        np.random.seed(57)
-        training_testing_id = list(range(len(training_testing_dataset)))
-        np.random.shuffle(training_testing_id)
-        training_id = training_testing_id[:int(len(training_testing_dataset)*0.6)]
-        testing_id = training_testing_id[int(len(training_testing_dataset)*0.6):]
-
-        all_labeled_training_data = np.array(training_testing_dataset)[training_id]
-        all_labeled_training_label = binarize_labels(np.array(training_testing_label)[training_id], positive_class_index, pos_label)
-        all_testing_data = np.array(training_testing_dataset)[testing_id]
-        all_testing_label = binarize_labels(np.array(training_testing_label)[testing_id], positive_class_index, pos_label)
-    elif dataset_name in ["guatemala-volcano", "hurricane-florence", "hurricane-harvey", "hurricane-matthew", "hurricane-michael", "mexico-earthquake", "midwest-flooding", "palu-tsunami", "santa-rosa-wildfire", "socal-fire", "xbd-all"]:
-        # positive_class_index: "0,1" -> Major damaged and destroyed in xbd-all
-        # positive_size: 1000
-        # unlabeled_size: 20000
-        # true_class_prior: 0.4
-        # batch_size: 128
-        # lr: 0.0001
-        # ent_loss_weight: 5
-        xbd_dataset = xBDDataset(root=data_path, dataset_name=dataset_name)
-        
-        training_testing_dataset = []
-        training_testing_label = []
-        for imgpath_label in xbd_dataset.imgs:
-            training_testing_dataset.append(np.asanyarray(xbd_dataset.loader(imgpath_label[0])))
-            training_testing_label.append(imgpath_label[1])
-
-        np.random.seed(57)
-        training_testing_id = list(range(len(training_testing_dataset)))
-        np.random.shuffle(training_testing_id)
-        training_id = training_testing_id[:int(len(training_testing_dataset)*0.6)]
-        testing_id = training_testing_id[int(len(training_testing_dataset)*0.6):]
-
-        all_labeled_training_data = np.array(training_testing_dataset)[training_id]
-        all_labeled_training_label = binarize_labels(np.array(training_testing_label)[training_id], positive_class_index, pos_label)
-        all_testing_data = np.array(training_testing_dataset)[testing_id]
-        all_testing_label = binarize_labels(np.array(training_testing_label)[testing_id], positive_class_index, pos_label)
     else:
         raise NotImplementedError("Wrong dataset arguments.")
 
@@ -215,12 +134,7 @@ def train_val_split(labels, positive_num, unlabeled_num, true_class_prior, pos_l
     assert unlabeled_n_num + val_n_num <= len(n_idxs), "Check negative sizes again!"
 
     training_p_idxs = p_idxs[:positive_num]
-    #####################################################################################################
-    # using ground truth to train the model or not
-    # please modify the get_copu_dataloader() in get_copu_dataloader.py
     training_u_idxs = np.concatenate((p_idxs[positive_num : positive_num + unlabeled_p_num], n_idxs[:unlabeled_n_num]))
-    # training_u_idxs = n_idxs[:unlabeled_n_num]
-    #####################################################################################################
     np.random.shuffle(training_u_idxs)
     idxs_set["training_p_idxs"] = training_p_idxs
     idxs_set["training_u_idxs"] = training_u_idxs

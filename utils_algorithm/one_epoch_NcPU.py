@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 
 from toolbox import pu_metric, metric_prin, AverageMeter, ProgressMeter, accuracy
-from utils_algorithm.NcPU import get_cont_mask, get_true_mask, get_pun_index, get_weakly_supervised_mask
+from utils_algorithm.NcPU import get_cont_mask, get_pun_index
 
 def train_NcPU(args, train_loader, model, cls_loss_fn, cont_loss_fn, ent_loss_fn, optimizer, scaler, epoch):
     batch_time = AverageMeter("Time", ":1.2f", is_sum=True)
@@ -52,20 +52,9 @@ def train_NcPU(args, train_loader, model, cls_loss_fn, cont_loss_fn, ent_loss_fn
             # classification loss
             idxs = get_pun_index(cls_logits, labels, threshold=model.threshold_param, softmax=True)
             loss_cls = cls_loss_fn(cls_logits, confidence=model.label_conf[index, :], idxs=idxs, epoch=epoch)
-            # loss_cls = cls_loss_fn(cls_logits, labels) # without pseudo labels for nnPU/uPU
-            # loss_cls = cls_loss_fn(cls_logits, true_labels) # for supervised
-
-            ###########################################################################################
-            #### Remove PhantomGate
-            # model.label_conf[index[idxs["pse_n_idx"]], 0] = torch.zeros(len(idxs["pse_n_idx"])).cuda()
-            # model.label_conf[index[idxs["pse_n_idx"]], 1] = torch.ones(len(idxs["pse_n_idx"])).cuda()
-            ###########################################################################################
 
             pse_n_pred_list.append(torch.softmax(cls_logits, dim=1)[:, 1][idxs["pse_n_idx"]])
         
-            # noisy contrastive loss
-            # mask = get_true_mask(true_labels) # for supervised
-            # mask = get_weakly_supervised_mask(labels)
             mask = get_cont_mask(args.tau, cls_logits, epoch=epoch, warm_up_epoch=args.warm_up)
             loss_cont = cont_loss_fn(online_out, target_out, mask)
 
