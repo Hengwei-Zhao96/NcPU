@@ -43,13 +43,12 @@ python main_NcPU.py --dataset "stl10" --positive_class_index "0,2,3,8,9" --posit
 ## Citation
 If you use _NcPU_ in your research, please cite the following paper:
 ```text
-@InProceedings{Zhao_2023_ICCV,
-    author    = {Zhao, Hengwei and Wang, Xinyu and Li, Jingtao and Zhong, Yanfei},
-    title     = {Class Prior-Free Positive-Unlabeled Learning with Taylor Variational Loss for Hyperspectral Remote Sensing Imagery},
-    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-    month     = {October},
-    year      = {2023},
-    pages     = {16827-16836}}
+@article{zhao2025noisy,
+  title={Noisy-Pair Robust Representation Alignment for Positive-Unlabeled Learning},
+  author={Zhao, Hengwei and Tu, Zhengzhong and Zheng, Zhuo and Wang, Wei and Wang, Junjue and Feagin, Rusty and Jiao, Wenzhe},
+  journal={arXiv preprint arXiv:2510.01278},
+  year={2025}
+}
 ```
 _NcPU_ can be used for academic purposes only, and any commercial use is prohibited.
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">
