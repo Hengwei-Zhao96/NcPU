@@ -7,8 +7,8 @@ by <a href="https://hengwei-zhao96.github.io">Hengwei Zhao</a>,
 <a href="https://zhuozheng.top">Zhuo Zheng</a>,
 <a href="https://wwangwitsel.github.io">Wei Wang</a>,
 <a href="https://junjuewang.top">Junjue Wang</a>,
-<a href="https://www.rustyfeagin.com">Rusty Feagin,
-and <a href="https://scholar.google.com/citations?hl=en&user=1v9ooFUAAAAJ">Wenzhe Jiao
+<a href="https://www.rustyfeagin.com">Rusty Feagin</a>,
+and <a href="https://scholar.google.com/citations?hl=en&user=1v9ooFUAAAAJ">Wenzhe Jiao</a>
 </h5>
 
 [[`arXiv`](https://arxiv.org/abs/2510.01278)]
