@@ -26,7 +26,7 @@ This is an official implementation of _NcPU_ in our ICLR 2026 paper.
 - python == 3.10.18
 - pytorch == 2.7.1
 
-## Running
+## Running:
 CIFAR-10
 ```bash
 python main_NcPU.py --dataset "cifar10" --positive_class_index "0,1,8,9" --positive_size 1000 --unlabeled_size 40000 --true_class_prior 0.4
@@ -40,7 +40,7 @@ STL-10
 python main_NcPU.py --dataset "stl10" --positive_class_index "0,2,3,8,9" --positive_size 1000 --unlabeled_size 90000 --true_class_prior 0 --batch_size 512 --ent_loss_weight 0.5 --lr 0.01
 ```
 
-## Citation
+## Citation:
 If you use _NcPU_ in your research, please cite the following paper:
 ```text
 @article{zhao2025noisy,
