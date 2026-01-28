@@ -20,7 +20,7 @@ This is an official implementation of _NcPU_ in our ICLR 2026 paper.
 
 ## Highlights:
 1. Representation learning under unreliable supervision
-2. NcPU achieves improvements over SOTA PU methods (even supervised counterparts) across diverse datasets without class prior
+2. _NcPU_ achieves improvements over SOTA PU methods (even supervised counterparts) across diverse datasets without class prior
 
 ## Requirements:
 - python == 3.10.18
