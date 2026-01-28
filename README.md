@@ -11,30 +11,33 @@ Rusty Feagin,
 and Wenzhe Jiao
 </h5>
 
-[[`arXiv`](https://arxiv.org/abs/2308.15081)]
-[[`Paper(ICCV 2023)`](https://openaccess.thecvf.com/content/ICCV2023/papers/Zhao_Class_Prior-Free_Positive-Unlabeled_Learning_with_Taylor_Variational_Loss_for_Hyperspectral_ICCV_2023_paper.pdf)]
+[[`arXiv`](https://arxiv.org/abs/2510.01278)]
+[[`Paper(ICLR 2026)`](https://arxiv.org/abs/2510.01278)]
 
 ---------------------
 
-This is an official implementation of _T-HOneCls_ in our ICCV 2023 paper.
+This is an official implementation of _NcPU_ in our ICLR 2026 paper.
 
 ## Highlights:
-1. Class prior-free PU learning for limited labeled hyperspectral imagery
-2. _T-HOneCls_ achieves state-of-the-art results on 7 datasets (21 tasks in total)
+1. Representation learning with unreliable supervision
+2. NcPU achieves improvements over SOTA PU methods (even supervised counterparts) across diverse datasets without class prior
 
 ## Requirements:
-- pytorch >= 1.13.1
-- GDAL ==3.4.1
+- python == 3.10.18
+- pytorch == 2.7.1
 
 ## Running
-1.Modify the data path in the configuration file (./configs/X/XX/XXX.py).
-The hyperspectral data can be obtained from the [`Link`](https://pan.baidu.com/s/1Ac3ko3BcZ4sS_cmzZhA7ow?pwd=sqyy )(password:sqyy)
-
-2.Training and testing
+CIFAR-10
 ```bash
-sh scripts/HongHu.sh
-sh scripts/LongKou.sh
-sh scripts/HanChuan.sh
+python main_NcPU.py --dataset "cifar10" --positive_class_index "0,1,8,9" --positive_size 1000 --unlabeled_size 40000 --true_class_prior 0.4
+```
+CIFAR-100
+```bash
+python main_NcPU.py --dataset "cifar100" --positive_class_index "4,30,55,72,95,1,32,67,73,91,6,7,14,18,24,3,42,43,88,97,15,19,21,31,38,34,63,64,66,75,26,45,77,79,99,2,11,35,46,98,27,29,44,78,93,36,50,65,74,80" --positive_size 1000 --unlabeled_size 40000 --true_class_prior 0.5 --ent_loss_weight 0.5
+```
+STL-10
+```bash
+python main_NcPU.py --dataset "stl10" --positive_class_index "0,2,3,8,9" --positive_size 1000 --unlabeled_size 90000 --true_class_prior 0 --batch_size 512 --ent_loss_weight 0.5 --lr 0.01
 ```
 
 ## Citation
@@ -69,7 +72,7 @@ If you use _T-HOneCls_ in your research, please cite the following paper:
     pages={1-1},
     doi={10.1109/TGRS.2023.3292929}}
 ```
-_T-HOneCls_ can be used for academic purposes only, and any commercial use is prohibited.
+_NcPU_ can be used for academic purposes only, and any commercial use is prohibited.
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">
 
 <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
