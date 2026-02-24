@@ -12,7 +12,7 @@ and <a href="https://scholar.google.com/citations?hl=en&user=1v9ooFUAAAAJ">Wenzh
 </h5>
 
 [[`arXiv`](https://arxiv.org/abs/2510.01278)]
-[[`Paper(ICLR 2026)`](https://arxiv.org/abs/2510.01278)]
+[[`Paper(ICLR 2026)`](https://openreview.net/pdf?id=tzJMLU2yRC)]
 
 ---------------------
 
@@ -43,11 +43,13 @@ python main_NcPU.py --dataset "stl10" --positive_class_index "0,2,3,8,9" --posit
 ## Citation:
 If you use _NcPU_ in your research, please cite the following paper:
 ```text
-@article{zhao2025noisy,
-  title={Noisy-Pair Robust Representation Alignment for Positive-Unlabeled Learning},
-  author={Zhao, Hengwei and Tu, Zhengzhong and Zheng, Zhuo and Wang, Wei and Wang, Junjue and Feagin, Rusty and Jiao, Wenzhe},
-  journal={arXiv preprint arXiv:2510.01278},
-  year={2025}
+@inproceedings{
+zhao2026noisypair,
+title={Noisy-Pair Robust Representation Alignment for Positive-Unlabeled Learning},
+author={Hengwei Zhao and Zhengzhong Tu and Zhuo Zheng and Wei Wang and Junjue Wang and Rusty Feagin and Wenzhe Jiao},
+booktitle={The Fourteenth International Conference on Learning Representations},
+year={2026},
+url={https://openreview.net/forum?id=tzJMLU2yRC}
 }
 ```
 _NcPU_ can be used for academic purposes only, and any commercial use is prohibited.
